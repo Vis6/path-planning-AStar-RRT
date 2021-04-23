@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="ca4e2611-b3f8-46f1-a302-3572bd115846" name="Default Changelist" comment="" />
+    <list default="true" id="ca4e2611-b3f8-46f1-a302-3572bd115846" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -26,7 +29,7 @@
   </component>
   <component name="PropertiesComponent">
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/main.py" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="settings.editor.selected.configurable" value="project.propVCSSupport.Mappings" />
   </component>
   <component name="RunManager">
@@ -74,9 +77,9 @@
       <screen x="2560" y="0" width="1920" height="1040" />
     </state>
     <state x="3300" y="275" key="FileChooserDialogImpl/0.0.2048.1112/2560.0.1920.1040@2560.0.1920.1040" timestamp="1619126248547" />
-    <state x="3021" y="162" key="SettingsEditor" timestamp="1619126241192">
+    <state x="3021" y="162" key="SettingsEditor" timestamp="1619126831711">
       <screen x="2560" y="0" width="1920" height="1040" />
     </state>
-    <state x="3021" y="162" key="SettingsEditor/0.0.2048.1112/2560.0.1920.1040@2560.0.1920.1040" timestamp="1619126241192" />
+    <state x="3021" y="162" key="SettingsEditor/0.0.2048.1112/2560.0.1920.1040@2560.0.1920.1040" timestamp="1619126831711" />
   </component>
 </project>
