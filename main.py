@@ -10,9 +10,9 @@ import os
 
 
 class GridWorld:
-	def __init__(self, show_animation=False, make_gif=False):
+	def __init__(self, show_animation=False, save_fig=False):
 		self.show_animation = show_animation
-		self.make_gif = make_gif
+		self.save_fig = save_fig
 
 		# position of source and destination
 		self.x_source = 10
@@ -53,7 +53,7 @@ class GridWorld:
 		plt.grid(True)
 		plt.axis('equal')
 
-		if self.make_gif:
+		if self.save_fig:
 			if not os.path.exists('./gif/a_star'):
 				os.makedirs('./gif/a_star')
 			if not os.path.exists('./gif/rrt'):
@@ -66,9 +66,9 @@ class GridWorld:
 
 
 class AStarPathPlanner:
-	def __init__(self, world, show_animation=False, make_gif=False):
+	def __init__(self, world, show_animation=False, save_fig=False):
 		self.show_animation = show_animation
-		self.make_gif = make_gif
+		self.save_fig = save_fig
 		self.env = world
 		self.motion = self.get_motion()
 		self.path_x = None
@@ -129,7 +129,7 @@ class AStarPathPlanner:
 			if self.show_animation:
 				plt.plot(current.x, current.y, 'xc')
 
-				if self.make_gif:
+				if self.save_fig:
 					plt.savefig('./gif/a_star/%d.jpg' % self.fig_num)
 					self.fig_num += 1
 
@@ -140,6 +140,7 @@ class AStarPathPlanner:
 			del open_set[current_id]
 			closed_set[current_id] = current
 
+			# if current node is the destination, break
 			if current.x == d_node.x and current.y == d_node.y:
 				d_node.parent_index = current.parent_index
 				d_node.f_cost = current.f_cost
@@ -172,7 +173,7 @@ class AStarPathPlanner:
 
 		# plot path
 		plt.plot(self.path_x, self.path_y, '-r')
-		if self.make_gif:
+		if self.save_fig:
 			plt.savefig('./gif/a_star/%d.jpg' % self.fig_num)
 		plt.pause(0.001)
 		plt.show()
@@ -213,9 +214,10 @@ class AStarPathPlanner:
 
 
 class RapidlyExploringRandomTree:
-	def __init__(self, world, show_animation=False, make_gif=False):
+	def __init__(self, world, show_animation=False, save_fig=False):
 		self.show_animation = show_animation
-		self.make_gif = make_gif
+		self.save_fig = save_fig
+		self.fig_num = 1
 		self.env = world
 
 	def path_planning(self):
@@ -223,13 +225,13 @@ class RapidlyExploringRandomTree:
 
 
 if __name__ == '__main__':
-	anim = True  # show animation
-	grid_world = GridWorld(show_animation=anim, make_gif=False)  # create grid world
+	# anim = True  # show animation
+	grid_world = GridWorld(show_animation=True, save_fig=False)  # create grid world
 
 	# A star
-	a_star = AStarPathPlanner(grid_world, show_animation=anim, make_gif=False)
+	a_star = AStarPathPlanner(grid_world, show_animation=True, save_fig=False)
 	a_star.path_planning()
 
 	# RRT
-	rrt = RapidlyExploringRandomTree(grid_world, show_animation=anim, make_gif=False)
+	rrt = RapidlyExploringRandomTree(grid_world, show_animation=False, save_fig=False)
 	rrt.path_planning()
