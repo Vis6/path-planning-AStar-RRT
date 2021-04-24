@@ -50,7 +50,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Python.compose_gif">
+  <component name="RunManager" selected="Python.main">
     <configuration name="compose_gif" type="PythonConfigurationType" factoryName="Python" nameIsGenerated="true">
       <module name="path-planning" />
       <option name="INTERPRETER_OPTIONS" value="" />
