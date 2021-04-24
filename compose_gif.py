@@ -6,22 +6,18 @@ Created Date: 04/23/2021
 
 import imageio
 import os
+import glob
 import numpy as np
 
 
 def compose_gif(img_path):
-	g = os.walk(img_path)
-	gif_images = []
-	img_num = []
-	for root, folder, files in g:
-		for file in files:
-			img_num.append(int(file.split('.')[0]))
-		img_num = np.array(img_num)
-		sort_index = np.argsort(img_num)
+	file_paths = glob.glob(pathname='%s/*.jpg' % img_path)
+	file_num = len(file_paths)
 
-		for ind in sort_index:
-			gif_images.append(imageio.imread('%s/%d.jpg' % (root, ind)))
-		imageio.mimsave('./gif/a_star.gif', gif_images, fps=50)
+	gif_images = []
+	for i in range(file_num):
+		gif_images.append(imageio.imread('%s/%d.jpg' % (img_path, i)))
+	imageio.mimsave('./gif/a_star.gif', gif_images, fps=10)
 
 
 if __name__ == '__main__':
