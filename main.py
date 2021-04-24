@@ -125,6 +125,10 @@ class AStarPathPlanner:
 			current_id = min(open_set, key=lambda o: open_set[o].f_cost)
 			current = open_set[current_id]
 
+			# remove current node from open set and add it to closed set
+			del open_set[current_id]
+			closed_set[current_id] = current
+
 			# plot current node in the grid world figure
 			if self.show_animation:
 				plt.plot(current.x, current.y, 'xc')
@@ -133,12 +137,8 @@ class AStarPathPlanner:
 					plt.savefig('./gif/a_star/%d.jpg' % self.fig_num)
 					self.fig_num += 1
 
-			if len(closed_set.keys()) % 10 == 0:
-				plt.pause(0.001)
-
-			# remove current node from open set and add it to closed set
-			del open_set[current_id]
-			closed_set[current_id] = current
+				if len(closed_set.keys()) % 10 == 0:
+					plt.pause(0.001)
 
 			# if current node is the destination, break
 			if current.x == d_node.x and current.y == d_node.y:
