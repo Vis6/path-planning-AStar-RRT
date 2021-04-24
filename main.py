@@ -33,10 +33,7 @@ class GridWorld:
 		self.map[20, :49] = True
 		self.map[40, 21:] = True
 
-		if self.show_animation:
-			self.show_grid_world()
-
-	def show_grid_world(self):
+	def show_grid_world(self, fig_num, name=None):
 		plt.figure()
 
 		# plot boundary
@@ -54,12 +51,12 @@ class GridWorld:
 		plt.axis('equal')
 
 		if self.save_fig:
-			if not os.path.exists('./gif/a_star'):
-				os.makedirs('./gif/a_star')
-			if not os.path.exists('./gif/rrt'):
-				os.makedirs('./gif/rrt')
-			plt.savefig('./gif/a_star/0.jpg')
-			plt.savefig('./gif/rrt/0.jpg')
+			if name is None:
+				plt.savefig('./gif/grid_world.jpg')
+			else:
+				if not os.path.exists('./gif/%s' % name):
+					os.makedirs('./gif/%s' % name)
+				plt.savefig('./gif/%s/%d.jpg' % (name, fig_num))
 
 		if not self.show_animation:
 			plt.show()
@@ -70,10 +67,12 @@ class AStarPathPlanner:
 		self.show_animation = show_animation
 		self.save_fig = save_fig
 		self.env = world
+		self.env.show_animation = self.show_animation
+		self.env.save_fig = self.save_fig
 		self.motion = self.get_motion()
 		self.path_x = None
 		self.path_y = None
-		self.fig_num = 1
+		self.fig_num = 0
 
 	class Node:
 		def __init__(self, x, y, g_cost, h_cost, parent_index):
@@ -114,6 +113,11 @@ class AStarPathPlanner:
 		# create open set and closed set
 		open_set, closed_set = dict(), dict()
 		open_set['%d,%d' % (s_node.x, s_node.y)] = s_node
+
+		# plot grid world
+		if self.show_animation:
+			self.env.show_grid_world(self.fig_num, 'a_star')
+			self.fig_num += 1
 
 		# loop
 		while True:
@@ -217,8 +221,10 @@ class RapidlyExploringRandomTree:
 	def __init__(self, world, show_animation=False, save_fig=False):
 		self.show_animation = show_animation
 		self.save_fig = save_fig
-		self.fig_num = 1
 		self.env = world
+		self.env.show_animation = self.show_animation
+		self.env.save_fig = self.save_fig
+		self.fig_num = 0
 
 	def path_planning(self):
 		pass
@@ -226,10 +232,10 @@ class RapidlyExploringRandomTree:
 
 if __name__ == '__main__':
 	# anim = True  # show animation
-	grid_world = GridWorld(show_animation=True, save_fig=True)  # create grid world
+	grid_world = GridWorld()  # create grid world
 
 	# A star
-	a_star = AStarPathPlanner(grid_world, show_animation=True, save_fig=True)
+	a_star = AStarPathPlanner(grid_world, show_animation=True, save_fig=False)
 	a_star.path_planning()
 
 	# RRT
