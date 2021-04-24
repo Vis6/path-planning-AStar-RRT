@@ -21,7 +21,7 @@ def compose_gif(img_path):
 
 		for ind in sort_index:
 			gif_images.append(imageio.imread('%s/%d.jpg' % (root, ind)))
-		imageio.mimsave('./gif/a_star.gif', gif_images, fps=10)
+		imageio.mimsave('./gif/a_star.gif', gif_images, fps=50)
 
 
 if __name__ == '__main__':
