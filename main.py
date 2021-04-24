@@ -212,11 +212,24 @@ class AStarPathPlanner:
 		self.path_y = y_path
 
 
+class RapidlyExploringRandomTree:
+	def __init__(self, world, show_animation=False, make_gif=False):
+		self.show_animation = show_animation
+		self.make_gif = make_gif
+		self.env = world
+
+	def path_planning(self):
+		pass
+
+
 if __name__ == '__main__':
 	anim = True  # show animation
-	gif = True
-	grid_world = GridWorld(show_animation=anim, make_gif=gif)  # create grid world
+	grid_world = GridWorld(show_animation=anim, make_gif=False)  # create grid world
 
 	# A star
-	a_star = AStarPathPlanner(grid_world, show_animation=anim, make_gif=gif)
+	a_star = AStarPathPlanner(grid_world, show_animation=anim, make_gif=False)
 	a_star.path_planning()
+
+	# RRT
+	rrt = RapidlyExploringRandomTree(grid_world, show_animation=anim, make_gif=False)
+	rrt.path_planning()
