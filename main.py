@@ -226,10 +226,10 @@ class RapidlyExploringRandomTree:
 
 if __name__ == '__main__':
 	# anim = True  # show animation
-	grid_world = GridWorld(show_animation=True, save_fig=False)  # create grid world
+	grid_world = GridWorld(show_animation=True, save_fig=True)  # create grid world
 
 	# A star
-	a_star = AStarPathPlanner(grid_world, show_animation=True, save_fig=False)
+	a_star = AStarPathPlanner(grid_world, show_animation=True, save_fig=True)
 	a_star.path_planning()
 
 	# RRT
