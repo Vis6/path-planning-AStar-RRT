@@ -7,6 +7,8 @@ import numpy as np
 import math
 from matplotlib import pyplot as plt
 import os
+import random
+import sys
 
 
 class GridWorld:
@@ -26,11 +28,11 @@ class GridWorld:
 		self.x_len = self.x_max - self.x_min
 		self.y_len = self.y_max - self.y_min
 		self.map = np.zeros((self.x_len + 1, self.y_len + 1), dtype=bool)
-		self.map[0, :] = True
-		self.map[60, :] = True
-		self.map[:, 0] = True
-		self.map[:, 60] = True
-		self.map[20, :49] = True
+		self.map[self.x_min, :] = True
+		self.map[self.x_max, :] = True
+		self.map[:, self.y_min] = True
+		self.map[:, self.y_max] = True
+		self.map[20, :40] = True
 		self.map[40, 21:] = True
 
 	def show_grid_world(self, fig_num, name=None):
@@ -218,34 +220,175 @@ class AStarPathPlanner:
 
 
 class RapidlyExploringRandomTree:
-	def __init__(self, world, goal_dist=2, max_iter=1000, show_animation=False, save_fig=False):
+	def __init__(self, world, dist_to_dest=2, max_iter=200000, delta_dist=2, prob=0.5, show_animation=False,
+	             save_fig=False):
 		self.show_animation = show_animation
 		self.save_fig = save_fig
 		self.env = world
 		self.env.show_animation = self.show_animation
 		self.env.save_fig = self.save_fig
-		self.goal_dist = goal_dist
+		self.dist_to_dest = dist_to_dest  # distance to the destination
 		self.max_iter = max_iter
+		self.delta_dist = delta_dist  # incremental distance
+		self.prob = prob  # used in random node generation
+		self.node_list = {}
+		self.s_node = None  # source node
+		self.d_node = None  # destination node
+		self.path_x = None
+		self.path_y = None
 		self.fig_num = 0
 
 	class Node:
-		def __init__(self, x, y):
+		def __init__(self, x, y, parent_id=None):
+			self.id = '%d,%d' % (x, y)
 			self.x = x  # index of grid
 			self.y = y  # index of grid
-			self.parent_index = None
+			self.parent_id = parent_id
 
 		def __str__(self):
-			return str(self.x) + "," + str(self.y) + "," + str(self.parent_index)
+			return self.id + ',' + str(self.x) + ',' + str(self.y) + ',' + str(self.parent_id)
 
 	def path_planning(self):
+		is_path_found = False
 		counter = 0  # initial counter
+		x_s = self.env.x_source
+		y_s = self.env.y_source
+		x_d = self.env.x_dest
+		y_d = self.env.y_dest
+		s_node = self.Node(x_s, y_s)
+		d_node = self.Node(x_d, y_d)
+		self.s_node = s_node
+		self.d_node = d_node
+		self.node_list['%d,%d' % (x_s, y_s)] = s_node
+
+		# plot grid world
+		if self.show_animation:
+			self.env.show_grid_world(self.fig_num, 'rrt')
+			self.fig_num += 1
 
 		while counter < self.max_iter:
 			counter += 1
-			new_node = self.generate_random_node()
+			rnd_node = self.generate_random_node()  # generate random node
+			nearest = self.find_nearest_node(self.node_list, rnd_node)  # find the nearest node in the tree
+			if self.calc_dist_to_dest(nearest) < self.dist_to_dest:
+				self.d_node.parent_id = nearest.id
+				is_path_found = True
+				break
+			new_node = self.extend_tree(nearest, rnd_node)  # extend tree
+			if new_node is not None:
+				self.node_list[new_node.id] = new_node
+
+				# plot current node in the grid world figure
+				if self.show_animation:
+					plt.plot(new_node.x, new_node.y, 'xc')
+
+					if self.save_fig:
+						plt.savefig('./gif/rrt/%d.jpg' % self.fig_num)
+						self.fig_num += 1
+
+					if len(self.node_list) % 10 == 0:
+						plt.pause(0.001)
+
+		if not is_path_found:  # check if path is found
+			print("RRT: Path is not found!")
+			sys.exit(-1)
+
+		# generate path
+		self.generate_path()
+
+		# plot path
+		plt.plot(self.path_x, self.path_y, '-r')
+		if self.save_fig:
+			plt.savefig('./gif/rrt/%d.jpg' % self.fig_num)
+		plt.pause(0.001)
+		plt.show()
 
 	def generate_random_node(self):
-		pass
+		p = random.random()
+		if p < self.prob:
+			# randomly generate node position in the boundary
+			x = random.randint(self.env.x_min + 1, self.env.x_max - 1)
+			y = random.randint(self.env.y_min + 1, self.env.y_max - 1)
+
+			# if node exists, regenerate
+			while self.node_exist(x, y):
+				x = random.randint(self.env.x_min + 1, self.env.x_max - 1)
+				y = random.randint(self.env.y_min + 1, self.env.y_max - 1)
+
+			return self.Node(x, y)
+		else:
+			return self.d_node
+
+	@staticmethod
+	def find_nearest_node(rrt_tree, node):
+		nearest_node_id = None
+		min_dist = -1
+		for node_id in rrt_tree:
+			node_in_tree = rrt_tree[node_id]
+			if min_dist == -1:  # init
+				nearest_node_id = node_in_tree.id
+				min_dist = math.hypot(node_in_tree.x - node.x, node_in_tree.y - node.y)
+			else:
+				temp_dist = math.hypot(node_in_tree.x - node.x, node_in_tree.y - node.y)
+				if temp_dist < min_dist:
+					min_dist = temp_dist
+					nearest_node_id = node_in_tree.id
+		return rrt_tree[nearest_node_id]
+
+	def calc_dist_to_dest(self, node):
+		return math.hypot(node.x - self.d_node.x, node.y - self.d_node.y)
+
+	def extend_tree(self, nearest_node, rnd_node):
+		new_node = None
+
+		# calculate new node's position
+		gain = self.delta_dist / math.hypot(nearest_node.x - rnd_node.x, nearest_node.y - rnd_node.y)
+		x_new = round(gain * (nearest_node.x + (rnd_node.x - nearest_node.x)))
+		y_new = round(gain * (nearest_node.y + (rnd_node.y - nearest_node.y)))
+
+		if self.is_out_of_boundary(x_new, y_new) or self.node_exist(x_new, y_new):  # in the grid world or node exists
+			return new_node
+		if not self.detect_obstacle(x_new, y_new, nearest_node):
+			new_node = self.Node(x_new, y_new, parent_id=nearest_node.id)
+		return new_node
+
+	def generate_path(self):
+		x_path = [self.d_node.x]
+		y_path = [self.d_node.y]
+		parent_id = self.d_node.parent_id
+		while parent_id is not None:
+			node = self.node_list[parent_id]
+			x_path.append(node.x)
+			y_path.append(node.y)
+			parent_id = node.parent_id
+		self.path_x = x_path
+		self.path_y = y_path
+
+	def detect_obstacle(self, x_pos, y_pos, node):
+		if self.env.map[x_pos, y_pos]:  # collision with obstacle
+			return True
+		else:
+			if (20 - node.x) * (20 - x_pos) < 0:
+				y = node.y + (y_pos - node.y) / (x_pos - node.x) * (20 - node.x)
+				if y < 40:
+					return True
+			if (40 - node.x) * (40 - x_pos) < 0:
+				y = node.y + (y_pos - node.y) / (x_pos - node.x) * (40 - node.x)
+				if y > 20:
+					return True
+		return False
+
+	def node_exist(self, x_pos, y_pos):
+		if '%d,%d' % (x_pos, y_pos) in self.node_list.keys():
+			return True
+		else:
+			return False
+
+	def is_out_of_boundary(self, x_pos, y_pos):
+		if x_pos < self.env.x_min or y_pos < self.env.y_min or x_pos > self.env.x_max or y_pos > self.env.y_max:
+			return True
+		else:
+			return False
 
 
 if __name__ == '__main__':
@@ -253,7 +396,7 @@ if __name__ == '__main__':
 	grid_world = GridWorld()  # create grid world
 
 	# A star
-	a_star = AStarPathPlanner(grid_world, show_animation=False, save_fig=False)
+	a_star = AStarPathPlanner(grid_world, show_animation=True, save_fig=False)
 	a_star.path_planning()
 
 	# RRT
