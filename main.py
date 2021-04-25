@@ -37,7 +37,7 @@ class GridWorld:
 		self.map[20, :40] = True
 		self.map[40, 21:] = True
 
-	def show_grid_world(self, fig_num, name=None):
+	def show_grid_world(self, fig_num=None, name=None):
 		plt.figure()
 
 		# plot boundary
@@ -404,3 +404,14 @@ if __name__ == '__main__':
 	# RRT
 	rrt = RapidlyExploringRandomTree(grid_world, show_animation=True, save_fig=False)
 	rrt.path_planning()
+
+	# comparison
+	grid_world.show_animation = True
+	grid_world.save_fig = False
+	grid_world.show_grid_world()
+	plt.plot(a_star.path_x, a_star.path_y, '-', label='A*')
+	plt.plot(rrt.path_x, rrt.path_y, '-', label="RRT")
+	plt.legend()
+	plt.grid(True)
+	plt.title("Comparison of Path Finding Results")
+	plt.show()
