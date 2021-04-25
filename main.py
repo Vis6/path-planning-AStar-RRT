@@ -2,6 +2,7 @@
 Implementation of two path finding algorithms using A* and RRT.
 
 Author: Ximu Zhang
+Created Date: 04/23/2021
 """
 
 # library
@@ -222,14 +223,14 @@ class AStarPathPlanner:
 
 
 class RapidlyExploringRandomTree:
-	def __init__(self, world, dist_to_dest=2, max_iter=200000, delta_dist=2, prob=0.5, show_animation=False,
+	def __init__(self, world, threshold=2, max_iter=200000, delta_dist=2, prob=0.5, show_animation=False,
 	             save_fig=False):
 		self.show_animation = show_animation
 		self.save_fig = save_fig
 		self.env = world
 		self.env.show_animation = self.show_animation
 		self.env.save_fig = self.save_fig
-		self.dist_to_dest = dist_to_dest  # distance to the destination
+		self.threshold = threshold  # distance to the destination for termination
 		self.max_iter = max_iter
 		self.delta_dist = delta_dist  # incremental distance
 		self.prob = prob  # used in random node generation
@@ -272,7 +273,7 @@ class RapidlyExploringRandomTree:
 			counter += 1
 			rnd_node = self.generate_random_node()  # generate random node
 			nearest = self.find_nearest_node(self.node_list, rnd_node)  # find the nearest node in the tree
-			if self.calc_dist_to_dest(nearest) < self.dist_to_dest:
+			if self.calc_dist_to_dest(nearest) < self.threshold:
 				self.d_node.parent_id = nearest.id
 				is_path_found = True
 				break
@@ -345,8 +346,8 @@ class RapidlyExploringRandomTree:
 
 		# calculate new node's position
 		gain = self.delta_dist / math.hypot(nearest_node.x - rnd_node.x, nearest_node.y - rnd_node.y)
-		x_new = round(gain * (nearest_node.x + (rnd_node.x - nearest_node.x)))
-		y_new = round(gain * (nearest_node.y + (rnd_node.y - nearest_node.y)))
+		x_new = round(nearest_node.x + gain * (rnd_node.x - nearest_node.x))
+		y_new = round(nearest_node.y + gain * (rnd_node.y - nearest_node.y))
 
 		if self.is_out_of_boundary(x_new, y_new) or self.node_exist(x_new, y_new):  # in the grid world or node exists
 			return new_node
@@ -402,7 +403,8 @@ if __name__ == '__main__':
 	a_star.path_planning()
 
 	# RRT
-	rrt = RapidlyExploringRandomTree(grid_world, show_animation=True, save_fig=False)
+	rrt = RapidlyExploringRandomTree(world=grid_world, threshold=2, max_iter=200000, delta_dist=2, prob=0.5,
+	                                 show_animation=True, save_fig=False)
 	rrt.path_planning()
 
 	# comparison
