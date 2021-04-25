@@ -1,5 +1,7 @@
 """
 Implementation of two path finding algorithms using A* and RRT.
+
+Author: Ximu Zhang
 """
 
 # library
@@ -48,7 +50,7 @@ class GridWorld:
 		# plot source and destination
 		plt.plot(self.x_source, self.y_source, '+g')
 		plt.plot(self.x_dest, self.y_dest, 'xb')
-		plt.plot()
+		# plt.plot()
 		plt.grid(True)
 		plt.axis('equal')
 
