@@ -218,15 +218,33 @@ class AStarPathPlanner:
 
 
 class RapidlyExploringRandomTree:
-	def __init__(self, world, show_animation=False, save_fig=False):
+	def __init__(self, world, goal_dist=2, max_iter=1000, show_animation=False, save_fig=False):
 		self.show_animation = show_animation
 		self.save_fig = save_fig
 		self.env = world
 		self.env.show_animation = self.show_animation
 		self.env.save_fig = self.save_fig
+		self.goal_dist = goal_dist
+		self.max_iter = max_iter
 		self.fig_num = 0
 
+	class Node:
+		def __init__(self, x, y):
+			self.x = x  # index of grid
+			self.y = y  # index of grid
+			self.parent_index = None
+
+		def __str__(self):
+			return str(self.x) + "," + str(self.y) + "," + str(self.parent_index)
+
 	def path_planning(self):
+		counter = 0  # initial counter
+
+		while counter < self.max_iter:
+			counter += 1
+			new_node = self.generate_random_node()
+
+	def generate_random_node(self):
 		pass
 
 
@@ -235,9 +253,9 @@ if __name__ == '__main__':
 	grid_world = GridWorld()  # create grid world
 
 	# A star
-	a_star = AStarPathPlanner(grid_world, show_animation=True, save_fig=False)
+	a_star = AStarPathPlanner(grid_world, show_animation=False, save_fig=False)
 	a_star.path_planning()
 
 	# RRT
-	rrt = RapidlyExploringRandomTree(grid_world, show_animation=False, save_fig=False)
+	rrt = RapidlyExploringRandomTree(grid_world, show_animation=True, save_fig=False)
 	rrt.path_planning()
