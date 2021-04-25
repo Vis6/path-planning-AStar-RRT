@@ -4,7 +4,6 @@
     <list default="true" id="ca4e2611-b3f8-46f1-a302-3572bd115846" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
     </list>
-    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -29,25 +28,13 @@
   </component>
   <component name="PropertiesComponent">
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/compose_gif.py" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\Visage\Documents\GitHub\path-planning-AStar-RRT" />
     </key>
-  </component>
-  <component name="RunDashboard">
-    <option name="ruleStates">
-      <list>
-        <RuleState>
-          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
-        </RuleState>
-        <RuleState>
-          <option name="name" value="StatusDashboardGroupingRule" />
-        </RuleState>
-      </list>
-    </option>
   </component>
   <component name="RunManager" selected="Python.main">
     <configuration name="compose_gif" type="PythonConfigurationType" factoryName="Python" nameIsGenerated="true">
@@ -139,22 +126,22 @@
     </state>
     <state x="740" y="275" key="FileChooserDialogImpl/0.0.1920.1040@0.0.1920.1040" timestamp="1619289184372" />
     <state x="3300" y="275" key="FileChooserDialogImpl/0.0.2048.1112/2560.0.1920.1040@2560.0.1920.1040" timestamp="1619126248547" />
-    <state width="1899" height="296" key="GridCell.Tab.0.bottom" timestamp="1619373395449">
+    <state width="1899" height="296" key="GridCell.Tab.0.bottom" timestamp="1619385393761">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1899" height="296" key="GridCell.Tab.0.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1619373395449" />
-    <state width="1899" height="296" key="GridCell.Tab.0.center" timestamp="1619373395449">
+    <state width="1899" height="296" key="GridCell.Tab.0.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1619385393761" />
+    <state width="1899" height="296" key="GridCell.Tab.0.center" timestamp="1619385393761">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1899" height="296" key="GridCell.Tab.0.center/0.0.1920.1040@0.0.1920.1040" timestamp="1619373395449" />
-    <state width="1899" height="296" key="GridCell.Tab.0.left" timestamp="1619373395449">
+    <state width="1899" height="296" key="GridCell.Tab.0.center/0.0.1920.1040@0.0.1920.1040" timestamp="1619385393761" />
+    <state width="1899" height="296" key="GridCell.Tab.0.left" timestamp="1619385393761">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1899" height="296" key="GridCell.Tab.0.left/0.0.1920.1040@0.0.1920.1040" timestamp="1619373395449" />
-    <state width="1899" height="296" key="GridCell.Tab.0.right" timestamp="1619373395449">
+    <state width="1899" height="296" key="GridCell.Tab.0.left/0.0.1920.1040@0.0.1920.1040" timestamp="1619385393761" />
+    <state width="1899" height="296" key="GridCell.Tab.0.right" timestamp="1619385393761">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1899" height="296" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" timestamp="1619373395449" />
+    <state width="1899" height="296" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" timestamp="1619385393761" />
     <state width="1899" height="348" key="GridCell.Tab.1.bottom" timestamp="1619372707760">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
