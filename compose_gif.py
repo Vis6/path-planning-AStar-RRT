@@ -19,4 +19,10 @@ def compose_gif(img_path, fps=10):
 
 
 if __name__ == '__main__':
-	compose_gif(img_path='./gif/a_star', fps=50)
+	make_a_star_gif = False
+	make_rrt_gif = True
+
+	if make_a_star_gif:
+		compose_gif(img_path='./gif/a_star', fps=50)
+	if make_rrt_gif:
+		compose_gif(img_path='./gif/rrt', fps=50)
